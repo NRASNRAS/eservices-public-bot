@@ -16,7 +16,7 @@ client.on('interactionCreate', async interaction => {
 
   if (interaction.commandName === 'passport') {
     let id = interaction.options.getNumber('id');
-    fetch('http://localhost/v1/passport/' + id)
+    fetch('https://nras.dqu.one/v1/passport/' + id)
         .then((res) => {
             if (res.status == 200) {
                 return res.json();
