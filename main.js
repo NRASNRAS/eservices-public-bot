@@ -25,6 +25,22 @@ client.on('ready', () => {
     console.log(`Logged in as ${client.user.tag}!`);
 });
 
+function createPassportEmbed(res) {
+    return new EmbedBuilder()
+        .setTitle(res.country + " Passport")
+        .setColor(res.isvalid ? Colors.Green : Colors.Red)
+        .setFooter({text: res.isvalid ? "Valid" : "Invalid"})
+        .addFields(
+            {name: "ID", value: res.id+""},
+            {name: "Name", value: res.username},
+            {name: "Discord", value: res.discord ? `<@${res.discord}>` : "None"},
+            {name: "Place", value: res.place || "Unknown"},
+            {name: "Expires", value: res.expires.split("T")[0]},
+            {name: "Issued on", value: res.issuedon.split("T")[0]},
+            {name: "Issued by", value: `<@${res.issuedby}>`}
+        )
+}
+
 client.on('interactionCreate', async interaction => {
     if (!interaction.isChatInputCommand()) return;
 
@@ -35,37 +51,15 @@ client.on('interactionCreate', async interaction => {
     if (interaction.commandName === 'passport') {
         let id = interaction.options.getNumber('id');
         apiFetch(apiurl+ '/v1/passport/' + id, (res) => {
-            let embed = new EmbedBuilder()
-                .setTitle(res.country + " Passport")
-                .setColor(res.isvalid ? Colors.Green : Colors.Red)
-                .setFooter({text: res.isvalid ? "Valid" : "Invalid"})
-                .addFields(
-                    {name: "ID", value: res.id+""},
-                    {name: "Name", value: res.username},
-                    {name: "Discord", value: `<@${res.discord}>`},
-                    {name: "Expires", value: res.expires.split("T")[0]},
-                    {name: "Issued on", value: res.issuedon.split("T")[0]},
-                    {name: "Issued by", value: `<@${res.issuedbyperson}> @ ${res.issuedby}`}
-                )
-            interaction.reply({embeds: [embed]})
+            let embed = createPassportEmbed(res);
+            interaction.reply({embeds: [embed]});
         }, (res) => interaction.reply(res));
     }
 
     if (interaction.commandName === 'mypassport') {
         let id = interaction.user.id;
         apiFetch(apiurl + "/v1/passport/lookup/discord/" + id, (res) => {
-            let embed = new EmbedBuilder()
-                .setTitle(res.country + " Passport")
-                .setColor(res.isvalid ? Colors.Green : Colors.Red)
-                .setFooter({text: res.isvalid ? "Valid" : "Invalid"})
-                .addFields(
-                    {name: "ID", value: res.id+""},
-                    {name: "Name", value: res.username},
-                    {name: "Discord", value: `<@${res.discord}>`},
-                    {name: "Expires", value: res.expires.split("T")[0]},
-                    {name: "Issued on", value: res.issuedon.split("T")[0]},
-                    {name: "Issued by", value: `<@${res.issuedbyperson}> @ ${res.issuedby}`}
-                )
+            let embed = createPassportEmbed(res);
             interaction.reply({embeds: [embed]})
         }, (res) => interaction.reply(res));
     }
@@ -80,35 +74,13 @@ client.on('interactionCreate', async interaction => {
 
             const id = discord.id;
             apiFetch(apiurl + "/v1/passport/lookup/discord/" + id, (res) => {
-                let embed = new EmbedBuilder()
-                    .setTitle(res.country + " Passport")
-                    .setColor(res.isvalid ? Colors.Green : Colors.Red)
-                    .setFooter({text: res.isvalid ? "Valid" : "Invalid"})
-                    .addFields(
-                        {name: "ID", value: res.id+""},
-                        {name: "Name", value: res.username},
-                        {name: "Discord", value: `<@${res.discord}>`},
-                        {name: "Expires", value: res.expires.split("T")[0]},
-                        {name: "Issued on", value: res.issuedon.split("T")[0]},
-                        {name: "Issued by", value: `<@${res.issuedbyperson}> @ ${res.issuedby}`}
-                    )
+                let embed = createPassportEmbed(res);
                 interaction.reply({embeds: [embed]})
             }, (res) => interaction.reply(res));
         } else if (interaction.options.getSubcommand() === 'nickname') {
             const nickname = interaction.options.getString('person');
             apiFetch(apiurl + "/v1/passport/lookup/nickname/" + nickname, (res) => {
-                let embed = new EmbedBuilder()
-                    .setTitle(res.country + " Passport")
-                    .setColor(res.isvalid ? Colors.Green : Colors.Red)
-                    .setFooter({text: res.isvalid ? "Valid" : "Invalid"})
-                    .addFields(
-                        {name: "ID", value: res.id+""},
-                        {name: "Name", value: res.username},
-                        {name: "Discord", value: `<@${res.discord}>`},
-                        {name: "Expires", value: res.expires.split("T")[0]},
-                        {name: "Issued on", value: res.issuedon.split("T")[0]},
-                        {name: "Issued by", value: `<@${res.issuedbyperson}> @ ${res.issuedby}`}
-                    )
+                let embed = createPassportEmbed(res);
                 interaction.reply({embeds: [embed]})
             }, (res) => interaction.reply(res));
         }
