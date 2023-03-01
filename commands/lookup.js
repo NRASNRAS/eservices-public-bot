@@ -18,7 +18,7 @@ async function lookupDiscord(interaction) {
 
     const id = discord.id;
 
-    apiFetch("/v1/passport/lookup/discord/" + id, (res) => {
+    apiFetch("/v1/passport/lookup/" + id, (res) => {
         let embed = createPassportEmbed(res);
         interaction.editReply({embeds: [embed]})
     }, (res) => {
@@ -29,7 +29,7 @@ async function lookupDiscord(interaction) {
 async function lookupNickname(interaction) {
     const nickname = interaction.options.getString('person');
 
-    apiFetch("/v1/passport/lookup/nickname/" + nickname, (res) => {
+    apiFetch("/v1/passport/lookup/" + nickname, (res) => {
         let embed = createPassportEmbed(res);
         interaction.editReply({embeds: [embed]})
     }, (res) => {

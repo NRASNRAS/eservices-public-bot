@@ -3,7 +3,7 @@ const { apiFetch, createPassportEmbed } = require("../util");
 async function myPassportCommand(interaction) {
     let id = interaction.user.id;
 
-    apiFetch("/v1/passport/lookup/discord/" + id, (res) => {
+    apiFetch("/v1/passport/lookup/" + id, (res) => {
         let embed = createPassportEmbed(res);
         interaction.editReply({embeds: [embed]})
     }, (res) => {
