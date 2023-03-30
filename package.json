@@ -1,7 +1,7 @@
 {
   "name": "nras-eservices-bot",
   "version": "0.2.0",
-  "description": "",
+  "description": "eServices Public Discord Bot",
   "main": "main.js",
   "scripts": {
     "start": "node main.js",
