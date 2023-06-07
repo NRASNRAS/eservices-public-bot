@@ -1,5 +1,5 @@
 const { token, clientid } = require("./config.json");
-const { REST, Routes, SlashCommandBuilder } = require('discord.js');
+const { REST, Routes, SlashCommandBuilder, ContextMenuCommandBuilder, ApplicationCommandType } = require('discord.js');
 
 const commands = [
     new SlashCommandBuilder().setName('ping').setDescription('Ping pong!'),
@@ -15,6 +15,9 @@ const commands = [
           .addStringOption(option => option.setName('person').setDescription('The persons ign').setRequired(true))
         ),
     new SlashCommandBuilder().setName('mypassport').setDescription('Display my passport'),
+    new ContextMenuCommandBuilder()
+          .setName('View Passport')
+          .setType(ApplicationCommandType.User),
 ];
 
 const rest = new REST({ version: '10' }).setToken(token);
