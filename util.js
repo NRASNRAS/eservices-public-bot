@@ -23,7 +23,7 @@ function createPassportEmbed(res) {
     return new EmbedBuilder()
         .setTitle(res.country + " Passport")
         .setColor(res.isvalid ? Colors.Green : Colors.Red)
-        .setFooter({text: res.isvalid ? "Valid" : "Invalid"})
+        .setFooter({text: (res.isvalid ? "Valid" : "Invalid") + " | " + res.platform})
         .addFields(
             {name: "ID", value: res.id+""},
             {name: "Name", value: res.username},
